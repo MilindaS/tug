@@ -156,8 +156,8 @@
   </div>
 
   <div id="controls">
-    <button class="player-btn" id="btnA">Player A Correct</button>
-    <button class="player-btn" id="btnB">Player B Correct</button>
+    <button class="player-btn" id="btnA">Team A Correct</button>
+    <button class="player-btn" id="btnB">Team B Correct</button>
   </div>
 
   <div id="status">Score — A: <span id="scoreA">0</span> | B: <span id="scoreB">0</span></div>
@@ -188,11 +188,11 @@
 
     function checkWinner() {
       if (scoreA >= 5) {
-        document.getElementById('status').textContent = '🏆 Player B Wins!';
+        document.getElementById('status').textContent = '🏆 Team B Wins!';
         winSound.play();
         disableButtons();
       } else if (scoreB >= 5) {
-        document.getElementById('status').textContent = '🏆 Player A Wins!';
+        document.getElementById('status').textContent = '🏆 Team A Wins!';
         winSound.play();
         disableButtons();
       }
