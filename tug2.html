@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tug of War with Images</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom, #a2d5f2, #ffffff);
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    h1 {
+      margin: 20px 0;
+    }
+
+    #arena {
+      position: relative;
+      width: 90%;
+      max-width: 1000px;
+      height: 500px;padding:20px;
+      margin: 30px auto;
+      border: 1px solid #333;
+      border-radius: 12px;
+      background-image: url('images/background.png'); /* Change this to your rope image URL */
+      background-repeat: no-repeat;
+      background-size: cover;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      overflow: hidden;
+    }
+
+    .player {
+      width: 100px;
+      height: 150px;
+      border-radius: 8px;
+      font-size: 24px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+    }
+
+    .player img {
+      max-width: 100%;
+      max-height: 100%;
+      border-radius: 8px;
+    }
+
+
+
+    #rope {
+      position: absolute;
+      top: 81%;
+      left: 50%;
+      height: 10px;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+      background-image: url('images/rope.png'); /* Change this to your rope image URL */
+      background-repeat: no-repeat;
+      background-size: cover;
+      width: 1500px; /* Rope length will be updated dynamically */
+    }
+
+    #controls {
+      margin-top: 30px;
+    }
+
+    .player-btn {
+      font-size: 18px;
+      padding: 10px 20px;
+      margin: 10px;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    #btnA{
+      background-color: #328640;
+    }
+    #btnB{
+      background-color: #eb5c5c;
+    }
+
+    .player-btn:hover {
+      background-color: #27ae60;
+    }
+
+    #status {
+  margin-top: 20px;
+  font-size: 24px; /* Increase font size for better readability */
+  font-weight: bold;
+  color: #333;
+  background-color: #f1f1f1; /* Light background for contrast */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+  display: inline-block;
+}
+
+.scoreboard {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  margin-top: 30px;
+  font-size: 32px;
+  font-weight: bold;
+  color: white;
+}
+
+.scoreboard div {
+  background-color: #2ecc71; /* Green background for score display */
+  padding: 20px;
+  border-radius: 12px;
+  width: 150px;
+  text-align: center;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.scoreboard span {
+  display: block;
+  font-size: 40px;
+  font-weight: 700;
+}
+
+
+
+
+
+
+
+  </style>
+</head>
+<body>
+
+  <h1>Tug of War</h1>
+
+  <div id="arena">
+    <!-- Player A -->
+    <div class="player" id="playerA">
+      <img src="images/playerA.png" alt="Player A">
+    </div>
+
+    <!-- Rope -->
+    <div id="rope"></div>
+
+    <!-- Player B -->
+    <div class="player" id="playerB">
+      <img src="images/playerB.png" alt="Player B">
+    </div>
+  </div>
+
+  <div id="controls">
+    <button class="player-btn" id="btnA">Player A Correct</button>
+    <button class="player-btn" id="btnB">Player B Correct</button>
+  </div>
+
+  <div id="status">Score — A: <span id="scoreA">0</span> | B: <span id="scoreB">0</span></div>
+
+  <audio id="pullSound" preload="auto">
+    <source src="sounds/pull.mp3">
+  </audio>
+  <audio id="winSound" preload="auto">
+    <source src="data:audio/mp3;base64,//uQxAAAAAAAAAAAAAAAAAAAAAAAw==">
+  </audio>
+
+  <script>
+    let scoreA = 0;
+    let scoreB = 0;
+    let ropeOffset = 50; // Start in the middle (50%)
+
+    const rope = document.getElementById('rope');
+    const scoreAElement = document.getElementById('scoreB');
+    const scoreBElement = document.getElementById('scoreA');
+    const pullSound = document.getElementById('pullSound');
+    const winSound = document.getElementById('winSound');
+
+    function updateRopePosition() {
+      // Update the rope position based on scores
+      const offset = (scoreA - scoreB) * 4; // Multiplier adjusts the movement speed
+      rope.style.left = 50 + offset + '%';
+    }
+
+    function checkWinner() {
+      if (scoreA >= 5) {
+        document.getElementById('status').textContent = '🏆 Player B Wins!';
+        winSound.play();
+        disableButtons();
+      } else if (scoreB >= 5) {
+        document.getElementById('status').textContent = '🏆 Player A Wins!';
+        winSound.play();
+        disableButtons();
+      }
+    }
+
+    function disableButtons() {
+      document.getElementById('btnA').disabled = true;
+      document.getElementById('btnB').disabled = true;
+    }
+
+    document.getElementById('btnB').addEventListener('click', () => {
+  if (scoreA < 5 && scoreB < 5) {
+    scoreA++;
+    scoreAElement.textContent = scoreA;
+    updateRopePosition();
+
+    // Reset and play the pull sound
+    pullSound.currentTime = 0; // Reset to the start
+    pullSound.play();
+
+    checkWinner();
+  }
+});
+
+document.getElementById('btnA').addEventListener('click', () => {
+  if (scoreA < 5 && scoreB < 5) {
+    scoreB++;
+    scoreBElement.textContent = scoreB;
+    updateRopePosition();
+
+    // Reset and play the pull sound
+    pullSound.currentTime = 0; // Reset to the start
+    pullSound.play();
+
+    checkWinner();
+  }
+});
+
+    updateRopePosition(); // Initialize rope position
+  </script>
+
+</body>
+</html>
