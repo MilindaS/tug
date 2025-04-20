@@ -22,7 +22,7 @@
       max-width: 1000px;
       height: 500px;padding:20px;
       margin: 30px auto;
-      border: 1px solid #333;
+      
       border-radius: 12px;
       background-image: url('images/background.png'); /* Change this to your rope image URL */
       background-repeat: no-repeat;
@@ -34,8 +34,8 @@
     }
 
     .player {
-      width: 100px;
-      height: 150px;
+      width: 200px;
+      height: 250px;
       border-radius: 8px;
       font-size: 24px;
       font-weight: bold;
@@ -55,9 +55,9 @@
 
     #rope {
       position: absolute;
-      top: 81%;
+      top: 74%;
       left: 50%;
-      height: 10px;
+      height: 40px;
       transform: translate(-50%, -50%);
       z-index: 1;
       background-image: url('images/rope.png'); /* Change this to your rope image URL */
@@ -92,14 +92,15 @@
     }
 
     #status {
-  margin-top: 20px;
+      position: absolute;
+  top: 0px;
+  left:37%;
   font-size: 24px; /* Increase font size for better readability */
   font-weight: bold;
   color: #333;
-  background-color: #f1f1f1; /* Light background for contrast */
+  
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
   display: inline-block;
 }
 
@@ -138,9 +139,10 @@
 </head>
 <body>
 
-  <h1>Tug of War</h1>
+  <h1>TUG OF WAR</h1>
 
   <div id="arena">
+    <div id="status"><span style="font-size: 30px;">SCORE </span><br><br>Team A: <span id="scoreA">0</span> | Team B: <span id="scoreB">0</span></div>
     <!-- Player A -->
     <div class="player" id="playerA">
       <img src="images/playerA.png" alt="Player A">
@@ -160,7 +162,7 @@
     <button class="player-btn" id="btnB">Team B Correct</button>
   </div>
 
-  <div id="status">Score — A: <span id="scoreA">0</span> | B: <span id="scoreB">0</span></div>
+  
 
   <audio id="pullSound" preload="auto">
     <source src="sounds/pull.mp3">
